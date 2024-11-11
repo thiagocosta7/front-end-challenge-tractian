@@ -6,6 +6,8 @@ export interface TreeNode {
   parentId?: string | null;
   status?: 'operating' | 'alert';
   sensorType?: string;
+  sensorId?: string;
+  gatewayId?: string;
 }
 
 export interface Location {
@@ -21,6 +23,8 @@ export interface Asset {
   locationId?: string | null;
   sensorType?: string;
   status?: 'operating' | 'alert';
+  sensorId?: string;
+  gatewayId?: string;
 }
 
 export interface Company {

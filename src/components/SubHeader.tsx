@@ -1,6 +1,7 @@
 'use client';
 
 import { useTreeContext } from '@/context/TreeContext';
+import { BoltIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 
 export const SubHeader = () => {
@@ -23,22 +24,28 @@ export const SubHeader = () => {
       <div className="flex gap-2">
         <button
           onClick={() => toggleFilter('showEnergySensors')}
-          className={`rounded px-4 py-2 ${
+          className={`flex items-center gap-2 rounded border px-4 py-2 ${
             additionalFilters.showEnergySensors
-              ? 'bg-blue-500'
-              : 'bg-gray-200 text-black'
+              ? 'border-blue-500 bg-blue-500 text-white'
+              : 'border-gray-300 text-gray-700'
           }`}
         >
+          <BoltIcon
+            className={`size-5 ${additionalFilters.showEnergySensors ? 'text-white' : 'text-blue-500'}`}
+          />
           Sensor de Energia
         </button>
         <button
           onClick={() => toggleFilter('showCriticalAssets')}
-          className={`rounded px-4 py-2 ${
+          className={`flex items-center gap-2 rounded border px-4 py-2 ${
             additionalFilters.showCriticalAssets
-              ? 'bg-red-500'
-              : 'bg-gray-200 text-black'
+              ? 'border-blue-500 bg-blue-500 text-white'
+              : 'border-gray-300 text-gray-700'
           }`}
         >
+          <ExclamationCircleIcon
+            className={`size-6 ${additionalFilters.showCriticalAssets ? 'text-white' : 'text-blue-500'}`}
+          />
           Crítico
         </button>
       </div>

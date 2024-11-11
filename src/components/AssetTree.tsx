@@ -38,11 +38,11 @@ const AssetTree = () => {
           node.children.length > 0;
 
         const matchesSensorFilter = additionalFilters.showEnergySensors
-          ? node.sensorType === 'energy'
+          ? node.sensorType === 'energy' || node.children.length > 0
           : true;
 
         const matchesCriticalFilter = additionalFilters.showCriticalAssets
-          ? node.status === 'alert'
+          ? node.status === 'alert' || node.children.length > 0
           : true;
 
         return matchesSearch && matchesSensorFilter && matchesCriticalFilter;

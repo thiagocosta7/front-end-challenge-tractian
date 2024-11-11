@@ -25,6 +25,8 @@ export const buildTree = (
       parentId: asset.locationId || asset.parentId || null,
       status: asset.status,
       sensorType: asset.sensorType,
+      sensorId: asset.sensorId,
+      gatewayId: asset.gatewayId,
     };
 
     nodeMap.set(asset.id, node);
