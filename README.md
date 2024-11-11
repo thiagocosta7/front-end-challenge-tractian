@@ -1,4 +1,4 @@
-# Front End Software Engineer
+# Front End Software Engineer | Challenge
 
 This application lists the content of `locations` and `assets` fetched from the API based on the selected company's ID. It includes a tree structure visualization of the company's assets and locations. The application offers the following functionalities:
 
