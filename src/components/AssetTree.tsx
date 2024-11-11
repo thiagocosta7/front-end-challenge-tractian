@@ -1,30 +1,14 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { useTreeContext } from '@/context/TreeContext';
-import { getAssets, getLocations } from '@/services/api';
-import { buildTree } from '@/utils/buildTree';
+import { useAppContext } from '@/context/AppContext';
 import TreeNode from './TreeNode';
 import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 
 const AssetTree = () => {
-  const { treeData, setTreeData, selectedCompany, additionalFilters } =
-    useTreeContext();
+  const { treeData, additionalFilters } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
-
-  useEffect(() => {
-    const loadData = async () => {
-      if (selectedCompany) {
-        const locations = await getLocations(selectedCompany.id);
-        const assets = await getAssets(selectedCompany.id);
-        const tree = buildTree(locations, assets);
-        setTreeData(tree);
-      }
-    };
-
-    loadData();
-  }, [selectedCompany, setTreeData]);
 
   const filterTree = (nodes: typeof treeData): typeof treeData => {
     return nodes

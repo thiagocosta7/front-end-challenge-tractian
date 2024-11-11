@@ -9,7 +9,8 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from '@heroicons/react/16/solid';
-import { useTreeContext } from '@/context/TreeContext';
+import { useAppContext } from '@/context/AppContext';
+import { getStatusIcon } from '@/utils/getStatusIcon';
 
 interface TreeNodeProps {
   node: TreeNodeType;
@@ -17,7 +18,7 @@ interface TreeNodeProps {
 
 const TreeNode = ({ node }: TreeNodeProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { selectedAsset, setSelectedAsset } = useTreeContext();
+  const { selectedAsset, setSelectedAsset } = useAppContext();
 
   const hasChildren = node.children.length > 0;
 
@@ -81,15 +82,7 @@ const TreeNode = ({ node }: TreeNodeProps) => {
           height={24}
         />
         <span className="mr-2">{node.name}</span>
-        {isComponent && (
-          <>
-            {isOperating && (
-              <span className="size-2 rounded-full bg-green-600" />
-            )}
-            {isCritical && <span className="size-2 rounded-full bg-red-700" />}
-            {isEnergySensor && <BoltIcon className="h-3 text-green-600" />}
-          </>
-        )}
+        {isComponent && getStatusIcon(node.status, node.sensorType)}
       </button>
 
       {isOpen && node.children.length > 0 && (

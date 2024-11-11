@@ -1,11 +1,12 @@
 'use client';
 
 import React from 'react';
-import { useTreeContext } from '@/context/TreeContext';
+import { useAppContext } from '@/context/AppContext';
 import { InboxIcon, ServerIcon, SignalIcon } from '@heroicons/react/24/outline';
+import { getStatusIcon } from '@/utils/getStatusIcon';
 
 const AssetDetails = () => {
-  const { selectedAsset } = useTreeContext();
+  const { selectedAsset } = useAppContext();
 
   if (!selectedAsset || selectedAsset.type !== 'component') {
     return null;
@@ -14,11 +15,9 @@ const AssetDetails = () => {
   return (
     <>
       <div className="border-b border-gray-300 px-4 py-1">
-        <p className="flex items-center text-lg font-bold">
+        <p className="flex items-center text-lg font-bold gap-1">
           {selectedAsset.name}
-          {selectedAsset.status === 'alert' && (
-            <span className="ml-2 text-red-500">•</span>
-          )}
+          {getStatusIcon(selectedAsset.status, selectedAsset.sensorType)}
         </p>
       </div>
       <div className="p-4">
