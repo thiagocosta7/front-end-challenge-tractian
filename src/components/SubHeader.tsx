@@ -5,7 +5,8 @@ import { BoltIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 
 export const SubHeader = () => {
-  const { additionalFilters, setAdditionalFilters, selectedCompany } = useAppContext();
+  const { additionalFilters, setAdditionalFilters, selectedCompany } =
+    useAppContext();
 
   const toggleFilter = (filterKey: keyof typeof additionalFilters) => {
     setAdditionalFilters({
@@ -18,7 +19,10 @@ export const SubHeader = () => {
     <div className="flex w-full items-center justify-between">
       <p className="text-xl font-bold">
         Ativos
-        <span className="text-sm font-normal text-gray-500"> / {selectedCompany?.name}</span>
+        <span className="text-sm font-normal text-gray-500">
+          {' '}
+          / {selectedCompany?.name}
+        </span>
       </p>
 
       <div className="flex gap-2">

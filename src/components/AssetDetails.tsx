@@ -1,34 +1,94 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppContext } from '@/context/AppContext';
-import { InboxIcon, ServerIcon, SignalIcon } from '@heroicons/react/24/outline';
+import {
+  InboxIcon,
+  ServerIcon,
+  SignalIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
 import { getStatusIcon } from '@/utils/getStatusIcon';
+import Image from 'next/image';
 
 const AssetDetails = () => {
   const { selectedAsset } = useAppContext();
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+  // Load the image from sessionStorage when selectedAsset changes
+  useEffect(() => {
+    if (selectedAsset) {
+      const storedImage = sessionStorage.getItem(
+        `asset-image-${selectedAsset.id}`,
+      );
+      setImageUrl(storedImage);
+    }
+  }, [selectedAsset]);
 
   // Only renders if a "component" type asset is selected
   if (!selectedAsset || selectedAsset.type !== 'component') {
     return null;
   }
 
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const url = reader.result as string;
+        sessionStorage.setItem(`asset-image-${selectedAsset.id}`, url);
+        setImageUrl(url);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageRemove = () => {
+    if (selectedAsset) {
+      sessionStorage.removeItem(`asset-image-${selectedAsset.id}`);
+      setImageUrl(null);
+    }
+  };
+
   return (
     <>
       <div className="border-b border-gray-300 px-4 py-1">
-        <p className="flex items-center text-lg font-bold gap-1">
+        <p className="flex items-center gap-1 text-lg font-bold">
           {selectedAsset.name}
           {getStatusIcon(selectedAsset.status, selectedAsset.sensorType)}
         </p>
       </div>
       <div className="p-4">
         <div className="my-4 grid grid-cols-2 gap-4">
-          <div className="flex items-center justify-center border border-dashed border-blue-300 bg-blue-50 text-blue-500">
-            <div className="flex aspect-square flex-col justify-center text-center">
-              <InboxIcon className="mx-auto size-8" />
-              <p className="text-sm">Adicionar imagem do Ativo</p>
+          {imageUrl ? (
+            <div className="relative flex aspect-square items-center justify-center border border-dashed border-blue-300 bg-blue-50">
+              <button
+                onClick={handleImageRemove}
+                className="absolute right-2 top-2 rounded-full bg-white p-1 shadow hover:bg-red-500 hover:text-white"
+                title="Remove Image"
+              >
+                <TrashIcon className="absolute right-1 top-1 z-10 size-6 text-red-500" />
+              </button>
+              <Image src={imageUrl} alt="Asset" className="object-cover" fill />
             </div>
-          </div>
+          ) : (
+            <label
+              htmlFor="upload-image"
+              className="flex aspect-square cursor-pointer items-center justify-center border border-dashed border-blue-300 bg-blue-50 text-blue-500"
+            >
+              <div className="flex flex-col justify-center text-center">
+                <InboxIcon className="mx-auto size-8" />
+                <p className="text-sm">Adicionar imagem do Ativo</p>
+              </div>
+              <input
+                id="upload-image"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+            </label>
+          )}
 
           <div className="flex flex-1 flex-col justify-evenly">
             <div>

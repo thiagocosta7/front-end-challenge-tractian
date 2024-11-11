@@ -1,4 +1,8 @@
-import { BoltIcon } from '@heroicons/react/16/solid';
+import {
+  BoltIcon,
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+} from '@heroicons/react/16/solid';
 
 /**
  * Returns the appropriate status icon based on the provided status and sensor type
@@ -17,17 +21,15 @@ export const getStatusIcon = (
   sensorType?: string,
 ): JSX.Element | null => {
   if (status === 'alert') {
-    return <span key="critical" className="size-2 rounded-full bg-red-700" />;
+    return <ExclamationCircleIcon className="size-4 text-red-600" />;
   }
 
   if (sensorType === 'energy') {
-    return <BoltIcon key="energy" className="h-3 text-green-600" />;
+    return <BoltIcon className="size-4 text-green-500" />;
   }
 
   if (status === 'operating') {
-    return (
-      <span key="operating" className="size-2 rounded-full bg-green-600" />
-    );
+    return <CheckCircleIcon className="size-4 text-green-500" />;
   }
 
   return null;

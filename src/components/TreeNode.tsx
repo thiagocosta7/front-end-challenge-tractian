@@ -4,11 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 
 import { TreeNode as TreeNodeType } from '@/types';
-import {
-  BoltIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-} from '@heroicons/react/16/solid';
+import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 import { useAppContext } from '@/context/AppContext';
 import { getStatusIcon } from '@/utils/getStatusIcon';
 
@@ -37,7 +33,6 @@ const TreeNode = ({ node }: TreeNodeProps) => {
 
   const handleSelect = () => {
     setSelectedAsset(node);
-    console.log('nodeee', node);
   };
 
   const handleToggle = () => {

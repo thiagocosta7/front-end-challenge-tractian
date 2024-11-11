@@ -5,9 +5,10 @@ import React, { useState } from 'react';
 import { useAppContext } from '@/context/AppContext';
 import TreeNode from './TreeNode';
 import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
+import { TreeSkeleton } from './TreeSkeleton';
 
 const AssetTree = () => {
-  const { treeData, additionalFilters } = useAppContext();
+  const { treeData, additionalFilters, isLoading } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
 
   const filterTree = (nodes: typeof treeData): typeof treeData => {
@@ -47,10 +48,12 @@ const AssetTree = () => {
         />
         <MagnifyingGlassIcon className="pointer-events-none absolute right-2 size-4 text-gray-700" />
       </div>
-      <div>
-        {filteredTree.map((node) => (
-          <TreeNode key={node.id} node={node} />
-        ))}
+      <div className="relative min-h-40">
+        {isLoading ? (
+          <TreeSkeleton />
+        ) : (
+          filteredTree.map((node) => <TreeNode key={node.id} node={node} />)
+        )}
       </div>
     </>
   );
