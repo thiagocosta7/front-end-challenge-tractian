@@ -68,7 +68,7 @@ Open your browser and navigate to `http://localhost:3000`.
 
 _The following space is reserved for a demonstration video of the application in action._
 
-Video...
+https://github.com/user-attachments/assets/226ae715-99f5-4b7e-80fa-ab000896556a
 
 ---
 
