@@ -1,5 +1,13 @@
 import { Asset, Location, TreeNode } from '@/types';
 
+/**
+ * Builds a hierarchical tree structure from locations and assets data
+ *
+ * @param {Location[]} locations - An array of location objects, each representing a location or sub-location
+ * @param {Asset[]} assets - An array of asset objects, each representing an asset, sub-asset, or component
+ * @returns {TreeNode[]} - An array of TreeNode objects representing the root nodes of the tree structure
+ *
+ */
 export const buildTree = (
   locations: Location[],
   assets: Asset[],

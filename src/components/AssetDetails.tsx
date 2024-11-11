@@ -8,6 +8,7 @@ import { getStatusIcon } from '@/utils/getStatusIcon';
 const AssetDetails = () => {
   const { selectedAsset } = useAppContext();
 
+  // Only renders if a "component" type asset is selected
   if (!selectedAsset || selectedAsset.type !== 'component') {
     return null;
   }

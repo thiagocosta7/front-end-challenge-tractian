@@ -17,23 +17,31 @@ interface AdditionalFilters {
 }
 
 interface AppContextProps {
-  companies: Company[];
-  locations: TreeNode[];
-  assets: TreeNode[];
-  treeData: TreeNode[];
-  setTreeData: (data: TreeNode[]) => void;
-  selectedCompany: Company | null;
-  setSelectedCompany: (company: Company) => void;
-  selectedAsset: TreeNode | null;
-  setSelectedAsset: (asset: TreeNode | null) => void;
-  additionalFilters: AdditionalFilters;
-  setAdditionalFilters: (filters: AdditionalFilters) => void;
-  isLoading: boolean;
+  companies: Company[]; // List of companies available
+  locations: TreeNode[]; // List of locations for the selected company
+  assets: TreeNode[]; // List of assets for the selected company
+  treeData: TreeNode[]; // Complete tree structure of assets and locations
+  setTreeData: (data: TreeNode[]) => void; // Function to update the tree data
+  selectedCompany: Company | null; // Currently selected company
+  setSelectedCompany: (company: Company) => void; // Function to update the selected company
+  selectedAsset: TreeNode | null; // Currently selected asset or component
+  setSelectedAsset: (asset: TreeNode | null) => void; // Function to update the selected asset or component
+  additionalFilters: AdditionalFilters; // Filters applied to the tree data
+  setAdditionalFilters: (filters: AdditionalFilters) => void; // Function to update filters
+  isLoading: boolean; // Indicates if data is being loaded
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
 
-export const AppProvider = ({ children }: { children: React.ReactNode }) => {
+/**
+ * AppProvider Component
+ * Provides application-wide context, including data, state management, and loading status.
+ *
+ * @param {React.ReactNode} children - The child components that will consume the context.
+ *
+ * @returns {JSX.Element} The context provider wrapping the children components.
+ */
+export const AppProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [locations, setLocations] = useState<TreeNode[]>([]);
   const [assets, setAssets] = useState<TreeNode[]>([]);
@@ -59,7 +67,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         .then((data) => {
           setCompanies(data);
           if (data.length > 0) {
-            setSelectedCompany(data[0]);
+            setSelectedCompany(data[0]); // Automatically selects the first company
           }
         })
         .catch((error) => {
@@ -75,7 +83,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     if (selectedCompany && companyDataFetched.current !== selectedCompany.id) {
       companyDataFetched.current = selectedCompany.id;
       setIsLoading(true);
-      setSelectedAsset(null);
+      setSelectedAsset(null); // Resets the selected asset on company change
       Promise.all([
         getLocations(selectedCompany.id),
         getAssets(selectedCompany.id),

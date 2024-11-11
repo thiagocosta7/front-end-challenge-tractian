@@ -47,12 +47,7 @@ const TreeNode = ({ node }: TreeNodeProps) => {
   };
 
   const isSelected = selectedAsset?.id === node.id;
-
   const isComponent = node?.type === 'component';
-
-  const isOperating = node?.status === 'operating';
-  const isCritical = node?.status === 'alert';
-  const isEnergySensor = node?.sensorType === 'energy';
 
   return (
     <>
@@ -85,7 +80,7 @@ const TreeNode = ({ node }: TreeNodeProps) => {
         {isComponent && getStatusIcon(node.status, node.sensorType)}
       </button>
 
-      {isOpen && node.children.length > 0 && (
+      {isOpen && hasChildren && (
         <div className="ml-4">
           {node.children.map((child) => (
             <TreeNode key={child.id} node={child} />
