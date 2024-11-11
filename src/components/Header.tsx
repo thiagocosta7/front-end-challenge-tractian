@@ -4,11 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useTreeContext } from '@/context/TreeContext';
 import { getCompanies } from '@/services/api';
 import Image from 'next/image';
-
-interface Company {
-  id: string;
-  name: string;
-}
+import { Company } from '@/types';
 
 const Header = () => {
   const [companies, setCompanies] = useState<Company[]>([]);

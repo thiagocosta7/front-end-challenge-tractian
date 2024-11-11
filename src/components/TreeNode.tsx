@@ -4,7 +4,12 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 
 import { TreeNode as TreeNodeType } from '@/types';
-import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
+import {
+  BoltIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
+} from '@heroicons/react/16/solid';
+import { useTreeContext } from '@/context/TreeContext';
 
 interface TreeNodeProps {
   node: TreeNodeType;
@@ -12,6 +17,7 @@ interface TreeNodeProps {
 
 const TreeNode = ({ node }: TreeNodeProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { selectedAsset, setSelectedAsset } = useTreeContext();
 
   const hasChildren = node.children.length > 0;
 
@@ -28,19 +34,37 @@ const TreeNode = ({ node }: TreeNodeProps) => {
     }
   };
 
+  const handleSelect = () => {
+    setSelectedAsset(node);
+    console.log('nodeee', node);
+  };
+
   const handleToggle = () => {
     if (hasChildren) {
       setIsOpen(!isOpen);
     }
   };
 
+  const isSelected = selectedAsset?.id === node.id;
+
+  const isComponent = node?.type === 'component';
+
+  const isOperating = node?.status === 'operating';
+  const isCritical = node?.status === 'alert';
+  const isEnergySensor = node?.sensorType === 'energy';
+
   return (
-    <div className="ml-4">
+    <>
       <button
-        className={`flex items-center ${hasChildren ? 'cursor-pointer' : 'cursor-default'}`}
-        onClick={handleToggle}
+        className={`flex w-full items-center rounded p-2 ${
+          isSelected ? 'bg-blue-500 text-white' : 'bg-white'
+        }`}
+        onClick={() => {
+          handleSelect();
+          handleToggle();
+        }}
       >
-        <span className="mr-2 flex h-4 w-4 items-center justify-center">
+        <span className="mr-2 flex size-4 items-center justify-center">
           {hasChildren ? (
             isOpen ? (
               <ChevronDownIcon />
@@ -52,11 +76,20 @@ const TreeNode = ({ node }: TreeNodeProps) => {
         <Image
           src={getIcon(node.type)}
           alt={node.type}
-          className="mr-2 h-4 w-4"
+          className={`mr-2 size-4 ${isSelected ? 'brightness-[100] grayscale-[100%]' : ''}`}
           width={24}
           height={24}
         />
-        <span>{node.name}</span>
+        <span className="mr-2">{node.name}</span>
+        {isComponent && (
+          <>
+            {isOperating && (
+              <span className="size-2 rounded-full bg-green-600" />
+            )}
+            {isCritical && <span className="size-2 rounded-full bg-red-700" />}
+            {isEnergySensor && <BoltIcon className="h-3 text-green-600" />}
+          </>
+        )}
       </button>
 
       {isOpen && node.children.length > 0 && (
@@ -66,7 +99,7 @@ const TreeNode = ({ node }: TreeNodeProps) => {
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 };
 
